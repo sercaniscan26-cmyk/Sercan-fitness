@@ -1,0 +1,288 @@
+<!doctype html>
+<html lang="tr">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
+  <meta name="theme-color" content="#0b0f14" />
+  <meta name="description" content="12 haftalık kişisel fitness, beslenme ve gelişim takip uygulaması" />
+  <link rel="manifest" href="manifest.webmanifest" />
+  <link rel="icon" href="icons/icon-192.png" />
+  <link rel="apple-touch-icon" href="icons/icon-192.png" />
+  <link rel="stylesheet" href="styles.css" />
+  <title>AYTECH Fitness</title>
+</head>
+<body>
+<div id="installBanner" class="install-banner hidden">
+  <div><b>AYTECH Fitness</b><span>Uygulamayı bu cihaza kurabilirsin.</span></div>
+  <button id="installBtn">Yükle</button>
+</div>
+
+<header class="topbar">
+  <div>
+    <div class="brand"><span class="brandmark">A</span><span>AYTECH Fitness</span></div>
+    <div class="subtitle">12 haftalık dönüşüm paneli</div>
+  </div>
+  <div class="week-badge" id="weekBadge">Hafta 1 / 12</div>
+</header>
+
+<main class="app-shell">
+  <nav class="tabs">
+    <button class="tab active" data-tab="dashboard">Ana Sayfa</button>
+    <button class="tab" data-tab="nutrition">Beslenme</button>
+    <button class="tab" data-tab="training">Antrenman</button>
+    <button class="tab" data-tab="progress">Gelişim</button>
+    <button class="tab" data-tab="coach">Koç</button>
+    <button class="tab" data-tab="settings">Ayarlar</button>
+  </nav>
+
+  <section id="dashboard" class="page active">
+    <div class="hero card">
+      <div>
+        <div class="eyebrow">BUGÜN</div>
+        <h1 id="heroTitle">Planı uygula. Veriyi kaydet. Haftayı kazan.</h1>
+        <p id="heroSub">Kalori, protein, antrenman ve adım hedeflerini tek ekrandan takip et.</p>
+      </div>
+      <div class="score-ring">
+        <div class="score" id="dayScore">0</div>
+        <div class="score-label">gün skoru</div>
+      </div>
+    </div>
+
+    <div class="kpi-grid">
+      <article class="card metric">
+        <div class="metric-head"><span>Kalori</span><b id="calRemain">2100</b></div>
+        <div class="metric-big"><span id="calUsed">0</span><small> / <span id="calTargetTxt">2100</span> kcal</small></div>
+        <div class="progress"><i id="calBar"></i></div>
+      </article>
+      <article class="card metric">
+        <div class="metric-head"><span>Protein</span><b id="proteinRemain">150 g kaldı</b></div>
+        <div class="metric-big"><span id="proteinUsed">0</span><small> / <span id="proteinTargetTxt">150</span> g</small></div>
+        <div class="progress"><i id="proteinBar"></i></div>
+      </article>
+      <article class="card metric">
+        <div class="metric-head"><span>Adım</span><b id="stepsRemain">9000</b></div>
+        <div class="metric-big"><span id="stepsUsed">0</span><small> / <span id="stepsTargetTxt">9000</span></small></div>
+        <div class="progress"><i id="stepsBar"></i></div>
+      </article>
+      <article class="card metric">
+        <div class="metric-head"><span>Su</span><b id="waterRemain">3.0 L</b></div>
+        <div class="metric-big"><span id="waterUsed">0</span><small> / <span id="waterTargetTxt">3.0</span> L</small></div>
+        <div class="progress"><i id="waterBar"></i></div>
+      </article>
+    </div>
+
+    <div class="two-col">
+      <article class="card">
+        <div class="section-title"><div><span class="eyebrow">GÜNLÜK CHECK-IN</span><h2>Bugünü kaydet</h2></div></div>
+        <div class="form-grid">
+          <label>Tarih<input id="dailyDate" type="date"></label>
+          <label>Kilo (kg)<input id="dailyWeight" type="number" step=".1" placeholder="86.0"></label>
+          <label>Bel (cm)<input id="dailyWaist" type="number" step=".1" placeholder="örn. 101"></label>
+          <label>Adım<input id="dailySteps" type="number" placeholder="9000"></label>
+          <label>Su (L)<input id="dailyWater" type="number" step=".1" placeholder="3.0"></label>
+          <label>Uyku (saat)<input id="dailySleep" type="number" step=".1" placeholder="7.5"></label>
+        </div>
+        <label>Not<textarea id="dailyNote" rows="2" placeholder="Enerji, açlık, performans, kaçamak, ağrı vb."></textarea></label>
+        <button class="primary" id="saveCheckin">Günü Kaydet</button>
+      </article>
+
+      <article class="card">
+        <div class="section-title"><div><span class="eyebrow">BUGÜNKÜ ANTRENMAN</span><h2 id="todayWorkoutTitle">—</h2></div></div>
+        <div id="todayWorkoutPreview" class="compact-list"></div>
+        <button class="secondary" data-jump="training">Antrenmana Git</button>
+      </article>
+    </div>
+
+    <article class="card">
+      <div class="section-title"><div><span class="eyebrow">12 HAFTA</span><h2>Program fazı</h2></div><div id="phasePill" class="pill">Blok 1</div></div>
+      <div class="phase-track">
+        <div><b>1–3</b><span>Temel + progresyon</span></div>
+        <div><b>4</b><span>Deload</span></div>
+        <div><b>5–7</b><span>Yükleme</span></div>
+        <div><b>8</b><span>Deload</span></div>
+        <div><b>9–11</b><span>Güçlü blok</span></div>
+        <div><b>12</b><span>Ölçüm</span></div>
+      </div>
+    </article>
+  </section>
+
+  <section id="nutrition" class="page">
+    <div class="page-head">
+      <div><span class="eyebrow">BESLENME</span><h1>Günlük makro takibi</h1><p>Yediklerini gir; kalan kalori ve makroları uygulama hesaplasın.</p></div>
+      <label class="inline-date">Tarih<input id="foodDate" type="date"></label>
+    </div>
+
+    <div class="macro-grid">
+      <div class="card mini-macro"><b id="nCal">0</b><span>kcal</span></div>
+      <div class="card mini-macro"><b id="nP">0</b><span>protein</span></div>
+      <div class="card mini-macro"><b id="nC">0</b><span>karbonhidrat</span></div>
+      <div class="card mini-macro"><b id="nF">0</b><span>yağ</span></div>
+    </div>
+
+    <div class="two-col">
+      <article class="card">
+        <div class="section-title"><div><span class="eyebrow">ÖĞÜN EKLE</span><h2>Manuel kayıt</h2></div></div>
+        <div class="form-grid">
+          <label>Yiyecek / öğün<input id="foodName" placeholder="Tavuk + pilav"></label>
+          <label>Kalori<input id="foodCal" type="number" placeholder="500"></label>
+          <label>Protein (g)<input id="foodP" type="number" step=".1" placeholder="40"></label>
+          <label>Karbonhidrat (g)<input id="foodC" type="number" step=".1" placeholder="55"></label>
+          <label>Yağ (g)<input id="foodF" type="number" step=".1" placeholder="12"></label>
+        </div>
+        <button class="primary" id="addFood">Öğünü Ekle</button>
+        <h3 class="subhead">Hızlı ekle</h3>
+        <div id="quickFoods" class="quick-grid"></div>
+      </article>
+
+      <article class="card">
+        <div class="section-title"><div><span class="eyebrow">GÜNLÜK LİSTE</span><h2 id="foodListTitle">Bugün</h2></div><button id="clearFoods" class="ghost danger">Günü temizle</button></div>
+        <div id="foodList" class="food-list empty-state">Henüz öğün eklenmedi.</div>
+      </article>
+    </div>
+
+    <article class="card">
+      <div class="section-title"><div><span class="eyebrow">2100 KCAL ŞABLON</span><h2>Diyet planı</h2></div></div>
+      <div class="meal-plan">
+        <div><b>Kahvaltı</b><span>2 yumurta + 60 g yulaf + 200 g yüksek proteinli yoğurt + meyve</span><em>≈ 500 kcal</em></div>
+        <div><b>Öğle</b><span>150–180 g tavuk/hindi + pirinç/bulgur + büyük salata + ölçülü zeytinyağı</span><em>≈ 600 kcal</em></div>
+        <div><b>Antrenman çevresi</b><span>1 ölçek whey isolate + 1 muz; gerekiyorsa 1 porsiyon karbonhidrat</span><em>≈ 250–350 kcal</em></div>
+        <div><b>Akşam</b><span>150–180 g yağsız et/balık + patates/pirinç + sebze + yoğurt</span><em>≈ 600–700 kcal</em></div>
+      </div>
+      <div class="tip">Hedef: yaklaşık <b>150 g protein</b>, <b>225 g karbonhidrat</b>, <b>65 g yağ</b>. Kaloriyi 14 günlük trende göre ayarlayacağız.</div>
+    </article>
+  </section>
+
+  <section id="training" class="page">
+    <div class="page-head">
+      <div><span class="eyebrow">ANTRENMAN</span><h1>5 gün ağırlık + aktif toparlanma</h1><p>Ağırlıkları ve tekrarları kaydet; bir sonraki antrenmanda önceki performansını gör.</p></div>
+    </div>
+    <div id="trainingDays" class="day-selector"></div>
+    <article class="card">
+      <div class="section-title">
+        <div><span class="eyebrow" id="trainingEyebrow">GÜN</span><h2 id="trainingTitle">—</h2></div>
+        <span id="trainingHint" class="pill">RIR 1–2</span>
+      </div>
+      <div id="exerciseList"></div>
+      <button class="primary" id="saveWorkout">Antrenmanı Kaydet</button>
+    </article>
+  </section>
+
+  <section id="progress" class="page">
+    <div class="page-head">
+      <div><span class="eyebrow">GELİŞİM</span><h1>Kilo, bel ve uyum trendi</h1><p>Tek günlük oynamalara değil, ortalamaya bak.</p></div>
+    </div>
+
+    <div class="kpi-grid">
+      <article class="card metric"><div class="metric-head"><span>Başlangıç</span></div><div class="metric-big"><span id="pStart">86.0</span><small> kg</small></div></article>
+      <article class="card metric"><div class="metric-head"><span>Son kayıt</span></div><div class="metric-big"><span id="pCurrent">—</span><small> kg</small></div></article>
+      <article class="card metric"><div class="metric-head"><span>Toplam değişim</span></div><div class="metric-big"><span id="pChange">—</span><small> kg</small></div></article>
+      <article class="card metric"><div class="metric-head"><span>Hedef</span></div><div class="metric-big"><span id="pGoal">78</span><small> kg</small></div></article>
+    </div>
+
+    <article class="card chart-card">
+      <div class="section-title"><div><span class="eyebrow">KİLO GRAFİĞİ</span><h2>Günlük kayıtlar</h2></div></div>
+      <canvas id="weightChart" height="260"></canvas>
+    </article>
+
+    <article class="card">
+      <div class="section-title"><div><span class="eyebrow">GEÇMİŞ</span><h2>Check-in kayıtları</h2></div><button class="ghost" id="exportBtn">CSV dışa aktar</button></div>
+      <div class="table-wrap">
+        <table><thead><tr><th>Tarih</th><th>Kilo</th><th>Bel</th><th>Adım</th><th>Su</th><th>Uyku</th><th></th></tr></thead><tbody id="historyBody"></tbody></table>
+      </div>
+    </article>
+  </section>
+
+  <section id="coach" class="page">
+    <div class="page-head">
+      <div><span class="eyebrow">AYTECH KOÇ</span><h1>Haftalık otomatik değerlendirme</h1><p>Kilo trendi, kalori uyumu, protein, adım ve antrenman kayıtlarını birlikte değerlendirir.</p></div>
+      <button class="primary compact" id="refreshCoach">Analizi Yenile</button>
+    </div>
+
+    <article class="card coach-card">
+      <div class="coach-avatar">A</div>
+      <div><span class="eyebrow">BU HAFTANIN KARARI</span><h2 id="coachDecision">Veri toplanıyor</h2><p id="coachText">En az 7 günlük düzenli kayıt girdikten sonra anlamlı değerlendirme başlayacak.</p></div>
+    </article>
+
+    <div class="four-col" id="coachStats"></div>
+
+    <article class="card">
+      <div class="section-title"><div><span class="eyebrow">KURALLAR</span><h2>Koç nasıl karar veriyor?</h2></div></div>
+      <ul class="rules">
+        <li>Haftalık düşüş yaklaşık <b>0,4–0,8 kg</b>: kaloriyi değiştirme.</li>
+        <li>Düşüş 2 hafta üst üste yavaşsa: önce adım ve kayıt uyumunu kontrol et; sonra yaklaşık <b>100 kcal</b> azaltmayı değerlendir.</li>
+        <li>Düşüş çok hızlı ve güç/uyku bozuluyorsa: yaklaşık <b>100 kcal</b> artırmayı değerlendir.</li>
+        <li>Protein hedefi sürekli düşükse: kalori kesmek yerine önce protein planını düzelt.</li>
+        <li>Deload haftalarında amaç rekor değil, toparlanmadır.</li>
+      </ul>
+    </article>
+  </section>
+
+  <section id="settings" class="page">
+    <div class="page-head">
+      <div><span class="eyebrow">AYARLAR</span><h1>Hedefler ve cihaz senkronizasyonu</h1><p>Yerel kullanım hemen hazır. Bulut bağlandığında telefon ve PC aynı veriyi kullanabilir.</p></div>
+    </div>
+
+    <div class="two-col">
+      <article class="card">
+        <div class="section-title"><div><span class="eyebrow">PROFİL</span><h2>Hedefler</h2></div></div>
+        <div class="form-grid">
+          <label>Başlangıç tarihi<input id="startDate" type="date"></label>
+          <label>Boy (cm)<input id="setHeight" type="number" value="168"></label>
+          <label>Başlangıç kilo<input id="setStartWeight" type="number" step=".1" value="86"></label>
+          <label>Hedef kilo<input id="setGoalWeight" type="number" step=".1" value="78"></label>
+          <label>Kalori hedefi<input id="setCalories" type="number" value="2100"></label>
+          <label>Protein (g)<input id="setProtein" type="number" value="150"></label>
+          <label>Karbonhidrat (g)<input id="setCarbs" type="number" value="225"></label>
+          <label>Yağ (g)<input id="setFat" type="number" value="65"></label>
+          <label>Adım<input id="setSteps" type="number" value="9000"></label>
+          <label>Su (L)<input id="setWater" type="number" step=".1" value="3"></label>
+        </div>
+        <button class="primary" id="saveSettings">Hedefleri Kaydet</button>
+      </article>
+
+      <article class="card">
+        <div class="section-title"><div><span class="eyebrow">BULUT SENKRON</span><h2>Telefon ↔ PC</h2></div><span id="cloudStatus" class="pill">Bağlı değil</span></div>
+        <p class="muted">Bu bölüm Supabase ile çalışır. Proje URL + anon key'i bir kez girersin; ardından e-posta hesabınla iki cihazda da oturum açıp aynı veriyi kullanırsın.</p>
+        <label>Supabase Project URL<input id="supabaseUrl" placeholder="https://xxxx.supabase.co"></label>
+        <label>Supabase anon key<input id="supabaseKey" type="password" placeholder="eyJ..."></label>
+        <div class="form-grid">
+          <label>E-posta<input id="cloudEmail" type="email" placeholder="sen@example.com"></label>
+          <label>Şifre<input id="cloudPassword" type="password" placeholder="En az 6 karakter"></label>
+        </div>
+        <div class="button-row">
+          <button class="secondary" id="cloudSignup">Hesap oluştur</button>
+          <button class="primary" id="cloudLogin">Giriş yap</button>
+        </div>
+        <div class="button-row">
+          <button class="secondary" id="cloudPush">Bu cihazı buluta gönder</button>
+          <button class="secondary" id="cloudPull">Buluttan bu cihaza çek</button>
+        </div>
+        <p class="tiny">Kurulum SQL'i ZIP paketindeki <b>SUPABASE_KURULUM.sql</b> dosyasında hazır.</p>
+      </article>
+    </div>
+
+    <article class="card">
+      <div class="section-title"><div><span class="eyebrow">TAKVİYE PLANI</span><h2>Sade temel</h2></div></div>
+      <div class="supp-grid">
+        <div><b>Whey isolate</b><span>Protein hedefin eksik kalıyorsa 1 ölçek.</span></div>
+        <div><b>Kreatin monohidrat</b><span>Her gün 5 g. Yükleme şart değil.</span></div>
+        <div><b>Pre-workout</b><span>Zorunlu değil; gerektiğinde ve kafein toplamını dikkate alarak.</span></div>
+        <div><b>Gereksiz başlangıç ekleri</b><span>BCAA/EAA/arginin/“fat burner” temel plana dahil değil.</span></div>
+      </div>
+    </article>
+
+    <article class="card danger-zone">
+      <div><b>Yerel verileri sıfırla</b><span>Bu tarayıcıdaki tüm kayıtları siler. Buluttaki veriyi silmez.</span></div>
+      <button class="ghost danger" id="resetLocal">Verileri sıfırla</button>
+    </article>
+  </section>
+</main>
+
+<footer>
+  <span>AYTECH Fitness v1.0 PWA</span>
+  <span>Sağlık sorunu, ilaç kullanımı, göğüs ağrısı, belirgin çarpıntı veya olağandışı belirti varsa sağlık profesyoneline danış.</span>
+</footer>
+
+<script src="app.js"></script>
+</body>
+</html>

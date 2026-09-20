@@ -1,0 +1,35 @@
+AYTECH FITNESS — ÜCRETSİZ GITHUB PAGES KURULUMU
+
+Bu paket GitHub Pages için hazırdır. Aylık hosting ücreti gerekmez.
+
+1) GitHub'da PUBLIC bir repository oluştur:
+   Önerilen ad: aytech-fitness
+
+2) Bu ZIP'in içindeki DOSYALARIN TAMAMINI repository kök dizinine yükle.
+   index.html kökte görünmelidir.
+   .github/workflows/pages.yml dosyasının da yüklendiğinden emin ol.
+
+3) GitHub repository:
+   Settings > Pages > Build and deployment > Source > GitHub Actions
+
+4) Actions sekmesinde "Deploy AYTECH Fitness to GitHub Pages" çalışır.
+   Deploy tamamlandığında Pages adresi oluşur.
+
+TELEFONA / PC'YE KURULUM
+- Android/Chrome: canlı siteyi aç > menü > Uygulamayı yükle / Ana ekrana ekle
+- iPhone/Safari: Paylaş > Ana Ekrana Ekle
+- Windows Chrome/Edge: adres çubuğundaki uygulama yükleme simgesi
+
+TELEFON ↔ PC OTOMATİK SENKRON
+1) Supabase'de ücretsiz proje oluştur.
+2) Bu paketteki SUPABASE_KURULUM.sql dosyasını SQL Editor'da çalıştır.
+3) Supabase Project URL ve anon/public key'i al.
+4) AYTECH Fitness > Ayarlar > Bulut Senkron bölümüne gir.
+5) E-posta + şifre ile hesap oluştur ve iki cihazda aynı hesapla giriş yap.
+6) İlk cihazda "Bu cihazı buluta gönder".
+7) İkinci cihazda "Buluttan bu cihaza çek".
+
+GÜVENLİK
+- Yalnızca anon/public key kullan.
+- service_role anahtarını ASLA uygulamaya yazma.
+- Veritabanında Row Level Security politikaları SUPABASE_KURULUM.sql ile açılır.
