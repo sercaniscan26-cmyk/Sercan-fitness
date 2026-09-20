@@ -1,6 +1,6 @@
 const DEFAULT_STATE = {
   settings:{
-    startDate:new Date().toISOString().slice(0,10),height:168,startWeight:86,goalWeight:78,
+    startDate:localISO(),height:168,startWeight:86,goalWeight:78,
     calories:2100,protein:150,carbs:225,fat:65,steps:9000,water:3
   },
   checkins:[], foods:{}, workouts:{}, cloud:{url:"",key:"",email:"",accessToken:"",userId:""}
@@ -69,7 +69,14 @@ function saveState(sync=true){
   localStorage.setItem("aytech_fitness_state",JSON.stringify(state));
   if(sync && state.cloud.accessToken && state.cloud.userId) cloudPush(true);
 }
-function todayISO(){return new Date().toISOString().slice(0,10)}
+function localISO(date=new Date()){
+  const y=date.getFullYear();
+  const m=String(date.getMonth()+1).padStart(2,"0");
+  const d=String(date.getDate()).padStart(2,"0");
+  return `${y}-${m}-${d}`;
+}
+
+function todayISO(){return localISO()}
 function fmt(n,d=0){return Number.isFinite(+n)?(+n).toFixed(d):"—"}
 function safeNum(v){const n=Number(v);return Number.isFinite(n)?n:0}
 function clamp(n,a,b){return Math.max(a,Math.min(b,n))}
@@ -224,7 +231,7 @@ function renderCoach(){
   const logs=[...state.checkins].filter(x=>safeNum(x.weight)>0).sort((a,b)=>b.date.localeCompare(a.date));
   const recent=logs.slice(0,7),prev=logs.slice(7,14),rw=avg(recent,"weight"),pw=avg(prev,"weight");
   let decision="Veri toplanıyor",txt="En az 7 günlük düzenli kilo ve beslenme kaydı girdikten sonra anlamlı değerlendirme başlayacak.";
-  const last7Dates=[...Array(7)].map((_,i)=>{const d=new Date();d.setDate(d.getDate()-i);return d.toISOString().slice(0,10)});
+  const last7Dates=[...Array(7)].map((_,i)=>{const d=new Date();d.setDate(d.getDate()-i);return localISO(d)});
   const fTotals=last7Dates.map(d=>foodTotals(d)),avgCal=fTotals.reduce((a,x)=>a+x.cal,0)/7,avgP=fTotals.reduce((a,x)=>a+x.p,0)/7;
   const recentSteps=state.checkins.filter(x=>last7Dates.includes(x.date));const avgSteps=avg(recentSteps,"steps");
   const weekWorkoutCount=Object.keys(state.workouts).filter(k=>last7Dates.some(d=>k.startsWith(d+"|"))).length;
